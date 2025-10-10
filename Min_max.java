@@ -43,27 +43,53 @@ import java.util.*;
 class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        int[] arr = new int[9];
-        for(int i=0;i<9;i++){
+        int n = sc.nextInt();
+        int[] arr = new int[n];
+        for(int i=0;i<n;i++){
             arr[i]=sc.nextInt();
         }
-        int[] score = new int[3];
-        int a=0, max=Integer.MIN_VALUE;
-        for(int i=0;i<3;i++){
-            int sum =arr[i]+arr[i+3]+arr[i+6];
-            double avg = sum/3;
-            score[i]=(int)avg;
+        int[] sarr = new int[n];
+        for(int i=0;i<n;i++){
+            int num = arr[i];
+            int sum = 0;
+            while(num>0){
+                int rem =num%10;
+                sum+=rem;
+                num/=10;
+            }
+            sarr[i]=sum;
         }
-        for(int s:score){
-            max=Math.max(max,s);
-        }
-        for(int i=0;i<score.length;i++){
-            System.out.print(score[i]+" ");
-        }
-        for(int i=0;i<score.length;i++){
-            if(score[i]==max){
-                System.out.print("\nPlayer"+(i+1)+" ");
+        List<Integer> oddlist = new ArrayList<>();
+        List<Integer> evenlist = new ArrayList<>();
+        for(int i=0;i<n;i++){
+            if(sarr[i]%2!=0){
+                oddlist.add(sarr[i]);
+            }else{
+                evenlist.add(sarr[i]);
             }
         }
+        System.out.println("Odd nums:");
+        for(int num:oddlist){
+            System.out.print(num+" ");
+        }
+        System.out.println("\nEven nums:");
+        for(int num:evenlist){
+            System.out.print(num+" ");
+        }
+        int oddmin=Integer.MAX_VALUE, evenmax=Integer.MIN_VALUE;
+        for(int num:oddlist){
+            oddmin=Math.min(oddmin,num);
+        }
+        for(int num:evenlist){
+            evenmax=Math.max(evenmax,num);
+        }
+        System.out.print("\nOdd min:"+oddmin+" Even max:"+evenmax+"\n");
+        int res = 0;
+        for(int i=0;i<n;i++){
+            if(sarr[i]==oddmin || sarr[i]==evenmax){
+                res+=arr[i];
+            }
+        }
+        System.out.println(res);
     }
 }
